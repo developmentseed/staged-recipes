@@ -1,0 +1,26 @@
+title: "Integrated Multi-satellitE Retrievals for GPM"
+description: "Analysis-ready Zarr datasets derived from NASA HDF5, half hour final"
+pangeo_forge_version: "0.5.0"
+pangeo_notebook_version: "2021.07.17"
+recipes:
+  - id: gpm-imerge-hhr
+    object: "recipe:recipe"
+provenance:
+  providers:
+    - name: "NASA PPS"
+      description: "National Aeronautics and Space Administration Precipitation Processing Center"
+      roles:
+        - producer
+        - licensor
+      url: https://gpm.nasa.gov
+  license: "Public Domain"
+maintainers:
+  - name: "Alex Mandel"
+    orcid: "0000-0003-2024-6801"
+    github: wildintellect
+bakery:
+  id: "?"  # must come from a valid list of bakeries
+  target: ?
+  resources:
+    memory: 4096
+    cpu: 1024
