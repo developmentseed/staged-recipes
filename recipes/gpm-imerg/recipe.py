@@ -2,6 +2,8 @@ from pangeo_forge_recipes.recipes import XarrayZarrRecipe
 from pangeo_forge_recipes.patterns import pattern_from_file_sequence
 import pandas as pd
 
+#TODO: replace with ENV vars
+username = password = 'pangeo@developmentseed.org'
 
 dates = pd.date_range("2000-06-01T00:00:00", "2021-05-31T23:59:59", freq="30min")
 input_url_pattern = (
@@ -25,11 +27,9 @@ input_urls = [
 
 pattern = pattern_from_file_sequence(input_urls, "time", nitems_per_file=1)
 
-#TODO: solve authentication injection
 recipe = XarrayZarrRecipe(
     pattern, 
     xarray_open_kwargs={'group': 'Grid', 'drop_variables': ['time_bnds', 'lon_bnds', 'lat_bnds']},
-    #fsspec_open_kwargs={'auth': aiohttp.BasicAuth(os.environ['GPM_IMERG_USERNAME'], os.environ['GPM_IMERG_PASSWORD'])},
-    fsspec_open_kwargs={'username': os.environ['GPM_IMERG_USERNAME'], 'password': os.environ['GPM_IMERG_PASSWORD']},
+    fsspec_open_kwargs={'auth': aiohttp.BasicAuth(username, password)},
     inputs_per_chunk=1
 )
