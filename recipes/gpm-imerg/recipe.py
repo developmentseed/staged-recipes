@@ -31,5 +31,6 @@ recipe = XarrayZarrRecipe(
     pattern, 
     xarray_open_kwargs={'group': 'Grid', 'drop_variables': ['time_bnds', 'lon_bnds', 'lat_bnds']},
     fsspec_open_kwargs={'auth': aiohttp.BasicAuth(username, password)},
-    inputs_per_chunk=1
+    inputs_per_chunk=1,
+    copy_input_to_local_file=True,
 )
