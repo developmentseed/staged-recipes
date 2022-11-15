@@ -1,5 +1,5 @@
 title: "AWS NOAA Optimum Interpolated SST"
-description: "Analysis-ready Zarr datasets derived from AWS NOAA OISST NetCDF"
+description: "Analysis-ready datasets derived from AWS NOAA OISST NetCDF"
 pangeo_forge_version: "0.9.2"
 pangeo_notebook_version: "2021.07.17"
 recipes:
@@ -15,9 +15,9 @@ provenance:
       url: s3://noaa-cdr-sea-surface-temp-optimum-interpolation-pds
   license: "Open Data"
 maintainers:
-  - name: "Ryan Abernathey"
-    orcid: "0000-0001-5999-4917"
-    github: rabernat
+  - name: "Ryan Avery"
+    orcid: ""
+    github: rbavery
 bakery:
   id: "devseed.bakery.development.aws.us-west-2"  # must come from a valid list of bakeries
   target: pangeo-forge-aws-bakery-flowcachebucketdasktest4-10neo67y7a924
