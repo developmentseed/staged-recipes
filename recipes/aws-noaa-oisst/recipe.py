@@ -1,11 +1,6 @@
 import pandas as pd
-
 from pangeo_forge_recipes.patterns import ConcatDim, FilePattern
-from pangeo_forge_recipes.recipes import XarrayZarrRecipe
 from pangeo_forge_recipes.recipes.reference_hdf_zarr import HDFReferenceRecipe
-
-from pangeo_forge_recipes.recipes import setup_logging
-setup_logging()
 
 start_date = "1981-09-01"
 
@@ -54,4 +49,3 @@ recipe = HDFReferenceRecipe(
 recipe_pruned = recipe.copy_pruned()
 run_function = recipe_pruned.to_function()
 run_function()
-print('done')
