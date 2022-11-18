@@ -9,7 +9,7 @@ pangeo_forge_version: '0.9.2'
 # If your PR contains multiple recipes, you may add additional elements to the list below.
 recipes:
   # User chosen name for recipe. Likely similiar to dataset name, ~25 characters in length
-  - id: noaa-atmosphere-climate-cloud-properties-isccp
+  - id: noaa-atmosphere-climate-cloud-properties-isccp-hgg-basic
     # The `object` below tells Pangeo Cloud specifically where your recipe instance(s) are located and uses the format <filename>:<object_name>
     # <filename> is name of .py file where the Python recipe object is defined.
     # For example, if <filename> is given as "recipe", Pangeo Cloud will expect a file named `recipe.py` to exist in your PR.
