@@ -1,0 +1,22 @@
+title: 'AWS NOAA Ozone-ESRL'
+description: 'Analysis-ready datasets derived from NOAA Ozone-ESRL'
+pangeo_forge_version: '0.9.2'
+pangeo_notebook_version: '2021.07.17'
+recipes:
+  - id: 'AWS NOAA Ozone-ESRL'
+    object: 'recipe:recipe'
+provenance:
+  providers:
+    - name: 'AWS NOAA Ozone-ESRL'
+      description: 'Registry of Open Data on AWS National Oceanographic & Atmospheric Administration National Centers for Environmental Information'
+      roles:
+        - producer
+        - licensor
+      url: s3://noaa-cdr-ozone-esrl-pds/
+  license: 'Open Data'
+maintainers:
+  - name: 'Ruben L. Mendoza'
+    orcid: '0000-0001-5880-7243'
+    github: Rub21
+bakery:
+  id: 'pangeo-aws-noaa-ozone-esrl-pds/'
