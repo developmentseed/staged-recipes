@@ -4,8 +4,7 @@ from os.path import join
 import s3fs
 
 from pangeo_forge_recipes.patterns import pattern_from_file_sequence
-
-# from pangeo_forge_recipes.recipes.reference_hdf_zarr import HDFReferenceRecipe
+from pangeo_forge_recipes.recipes.reference_hdf_zarr import HDFReferenceRecipe
 
 url_base = 's3://noaa-cdr-leaf-area-index-fapar-pds/data/'
 
@@ -28,5 +27,4 @@ for year in years:
     file_list += sorted(filter(is_nc, map(add_s3, fs.ls(join(url_base, str(year)), detail=False))))
 
 pattern = pattern_from_file_sequence(file_list, 'time', nitems_per_file=1)
-print(pattern)
-# recipe = HDFReferenceRecipe(pattern, netcdf_storage_options={'anon': True})
+recipe = HDFReferenceRecipe(pattern, netcdf_storage_options={'anon': True})
