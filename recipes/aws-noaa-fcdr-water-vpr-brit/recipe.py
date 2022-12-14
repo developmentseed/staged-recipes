@@ -27,5 +27,5 @@ years = list(map(lambda x: os.path.basename(x), years_folders))
 for year in years:
     file_list += sorted(filter(is_nc, map(add_s3, fs.ls(join(url_base, str(year)), detail=False))))
 
-pattern = pattern_from_file_sequence(file_list, 'time', nitems_per_file=1)
+pattern = pattern_from_file_sequence(file_list, 'time', nitems_per_file=12)
 recipe = HDFReferenceRecipe(pattern, netcdf_storage_options={'anon': True})
