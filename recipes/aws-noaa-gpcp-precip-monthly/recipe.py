@@ -17,13 +17,19 @@ def is_nc(x):
 def add_s3(x):
     return "s3://" + x
 
+def remove_non_utf8(x):
+    for n, v in x.attrs.items():
+        if isinstance(v, bytes):
+            v = v.decode("utf-8", 'ignore').encode("utf-8")
+            x.attrs[n] = v
+    
 
 file_list = []
 for year in dates.year:
     file_list += [add_s3(x) for x in fs.ls(join(url_base, str(year))) if is_nc(x)]
 file_list = sorted(file_list)
 pattern = pattern_from_file_sequence(file_list, "time", nitems_per_file=1)
-recipe = HDFReferenceRecipe(pattern, netcdf_storage_options={"anon": True})
+recipe = HDFReferenceRecipe(pattern, netcdf_storage_options={"anon": True}, preprocess=remove_non_utf8)
 
 ### Testing
 from dask.diagnostics import ProgressBar
