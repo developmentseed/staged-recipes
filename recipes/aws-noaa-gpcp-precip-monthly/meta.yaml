@@ -1,5 +1,5 @@
 title: 'AWS NOAA GPCP PRECIP MONTHLY'
-description: 'Analysis-ready datasets derived from NOAA GPCP PRECIP MONTHLY'
+description: 'The Global Precipitation Climatology Project (GPCP) Monthly Precipitation Climate Data Record (CDR) consists of monthly satellite-gauge and associated precipitation error estimates taken from January 1979–present. The CDR is created by combining the precipitation information from several satellite and in situ sources into a final merged product that uses the strengths of each data type to create a more accurate record.'
 pangeo_forge_version: '0.9.2'
 pangeo_notebook_version: '2021.07.17'
 recipes:
