@@ -1,5 +1,5 @@
 title: 'AWS NOAA Ozone-ESRL'
-description: 'Analysis-ready datasets derived from NOAA Ozone-ESRL'
+description: 'The Ozone-Earth System Research Laboratory (ESRL) Climate Data Record (CDR) provides a vertically resolved, gap free monthly and zonal mean ozone dataset that spans from 1979– 2007. This dataset incorporates measurements from several different satellite instruments and over 130 ozonesonde stations globally. Ozone-ESRL also encompasses 70 altitude or pressure levels, spanning the atmosphere from the Earth’s surface up to 70km or ~0.05hPa, and both ozone volume mixing ratio and ozone number density. This CDR can be used to assess ozone fields from chemistry–climate model simulations, or provide ozone boundary conditions for global climate model simulations that do not treat stratospheric chemistry interactively.'
 pangeo_forge_version: '0.9.2'
 pangeo_notebook_version: '2021.07.17'
 recipes:
