@@ -1,5 +1,5 @@
 title: 'AWS NOAA CDR PRECIP PERSIANN'
-description: 'Analysis-ready datasets derived from NOAA CDR PRECIP PERSIANN'
+description: 'The Precipitation - PERSIANN Climate Data Record (CDR) is a daily, quasi-global precipitation product that spans from 1982–2020. Coverage extends from 60° S–60°N and 0°–360° longitude at 0.25° spatial resolution. This dataset supports climatologists, hydrologists, hydrometeorologists, and hydroclimatologists in various forms of climate research, including extreme event (flood and drought) analysis.'
 pangeo_forge_version: '0.9.2'
 pangeo_notebook_version: '2021.07.17'
 recipes:
