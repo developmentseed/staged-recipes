@@ -1,5 +1,5 @@
 title: 'AWS NOAA OUTGOING LONGWAVE RADIATION MONTHLY'
-description: 'Analysis-ready datasets derived from NOAA OUTGOING LONGWAVE RADIATION MONTHLY'
+description: 'This Climate Data Record (CDR) of monthly mean High Resolution Infrared Radiation Sounder (HIRS) Outgoing Longwave Radiation (OLR) flux at the top of the atmosphere in all sky conditions is on a 2.5 degree x 2.5 degree grid with global coverage from January 1979 to the present and continuing monthly. Grid dimensions are 144 x 72, with 10,368 total grids over the globe. The data set was derived using a multispectral HIRS OLR algorithm on the HIRS level 1b dataset from the TIROS-N to NOAA-19 series satellites with inter-satellite and radiance calibration adjustments employing an empirical diurnal model for the monthly mean derivation. The data file format is netCDF-4 with CF metadata, and it is accompanied by algorithm documentation, data flow diagram and source code for the NOAA CDR Program.'
 pangeo_forge_version: '0.9.2'
 pangeo_notebook_version: '2021.07.17'
 recipes:
