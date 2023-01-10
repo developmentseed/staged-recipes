@@ -1,24 +1,8 @@
-# import csv
-# import os
-# from os.path import join
-
 import boto3
 
-# from pangeo_forge_recipes.patterns import pattern_from_file_sequence
-
-# import s3fs
-
+from pangeo_forge_recipes.patterns import pattern_from_file_sequence
 
 # from pangeo_forge_recipes.recipes.reference_hdf_zarr import HDFReferenceRecipe
-
-
-def is_nc(x):
-    return x.endswith('.nc')
-
-
-def add_s3(x):
-    return 's3://' + x
-
 
 client = boto3.client('s3')
 bucket_name = 'noaa-cdr-microwave-brit-temp-pds'
@@ -34,59 +18,46 @@ response_iterator = paginator.paginate(
 )
 
 # sensor_list = ['N15', 'N16', 'N17', 'N18', 'AQUA', 'M02']
-# must also ignore files that don't include GRID in filename
-
-
-# WORKS
-for result in response_iterator:
-    contents = result.get('Contents', [])
-    # can implement filter here
-    for f in contents:
-        key = f['Key']
-        # print(f's3://{bucket_name}/{key}')
-
-        if f['Key'].split('_')[4] == 'N15':
-            # years = f["Key"].split('/')[1]
-            # print(years.count('2022'))
-
-            matching_files = [f for f in contents]
-            print(matching_files)
-
-            # pattern_N15 = pattern_from_file_sequence(matching_files, 'time')
-            # print(pattern_N15)
-
-
-# pattern = pattern_from_file_sequence(file_list, 'time', nitems_per_file=1)
-# recipe = HDFReferenceRecipe(pattern, netcdf_storage_options={'anon': True})
-
-
-# work-in-progess old method
-
-# url_base = 'noaa-cdr-microwave-brit-temp-pds/data/'
-# fs = s3fs.S3FileSystem(anon=True)
-
-# years_folders = fs.ls(join(url_base))
-# years = list(map(lambda x: os.path.basename(x), years_folders))
-
-# file_list = []
-
-# def add_sensor(sensor_name):
-#     sensors_list = fs.find(url_base)
-#     for sensor in sensors_list:
-#         sensor_name = sensor.split('_')[4]
-#         return 'NESDIS-STAR_FCDR-GRID_AMSU-A_V01R00_' + sensor_name
-
-
-# for year in years:
-#   file_list += sorted(filter(is_nc, map(add_s3, fs.ls(join(url_base, str(year)), detail=False))))
-
-#  # To Do:
-#  # add add_sensor to URL (to retrieve only those with GRID in file name, iterate thru all sensors)
-
-#     pattern = pattern_from_file_sequence(file_list, 'time', nitems_per_file=1)
-#     print(pattern)
 
 # psuedo code:
 # iterate through sensor list, if sensor (e.g., N15) is in file_list
 # iterate through year in years and create separate archive for each sensor
 # want to ignore files that don't include GRID in filename
+# for now group ascending and descending together
+
+for result in response_iterator:
+    contents = result.get('Contents', [])
+    # can implement filter here
+    for f in contents:
+        key = f['Key']
+        # print(key)
+        # look at only gridded files
+        if '-GRID_' in key:
+            # to iterate through yearly subfolders = key.split('/')[1]
+            for key.split('/')[1] in key:
+                if '_N15_' in key:
+                    pattern_N15 = pattern_from_file_sequence(key, 'time')
+                    print('pattern_N15')
+                    print(pattern_N15)
+                if '_N16_' in key:
+                    pattern_N16 = pattern_from_file_sequence(key, 'time')
+                    print('pattern_N16')
+                    print(pattern_N16)
+                if '_N17_' in key:
+                    pattern_N17 = pattern_from_file_sequence(key, 'time')
+                    print('pattern_N17')
+                    print(pattern_N17)
+                if '_N18_' in key:
+                    pattern_N18 = pattern_from_file_sequence(key, 'time')
+                    print('pattern_N18')
+                    print(pattern_N18)
+                if '_AQUA_' in key:
+                    pattern_AQUA = pattern_from_file_sequence(key, 'time')
+                    print('pattern_AQUA')
+                    print(pattern_AQUA)
+                if '_M02_' in key:
+                    pattern_M02 = pattern_from_file_sequence(key, 'time')
+                    print('pattern_M02')
+                    print(pattern_M02)
+                else:
+                    continue
