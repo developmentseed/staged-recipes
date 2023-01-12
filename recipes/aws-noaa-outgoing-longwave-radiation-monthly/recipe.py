@@ -17,5 +17,5 @@ def add_s3(x):
 
 file_list = [add_s3(x) for x in fs.ls(join(url_base)) if is_nc(x)]
 file_list = sorted(file_list)
-pattern = pattern_from_file_sequence(file_list, "time", nitems_per_file=1)
+pattern = pattern_from_file_sequence(file_list, "time", nitems_per_file=526)
 recipe = HDFReferenceRecipe(pattern, netcdf_storage_options={"anon": True})
