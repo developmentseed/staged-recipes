@@ -1,0 +1,22 @@
+title: 'AWS NOAA OUTGOING LONGWAVE RADIATION DAILY'
+description: 'The daily Outgoing Longwave Radiation (OLR) Climate Data Record (CDR) measures the amount of terrestrial radiation released into space and, by extension, the amount of cloud cover and water vapor that intercepts that radiation in the atmosphere. Input data for the daily OLR record primarily comes from the high-resolution infrared radiation sounder (HIRS). The final record is generated through a combination of statistical techniques, including OLR regression, instrument ambient temperature prediction coefficients, and inter-satellite bias corrections.'
+pangeo_forge_version: '0.9.2'
+pangeo_notebook_version: '2021.07.17'
+recipes:
+  - id: 'AWS NOAA Outgoing Longwave Radiation Daily'
+    object: 'recipe:recipe'
+provenance:
+  providers:
+    - name: 'AWS NOAA Outgoing Longwave Radiation Daily'
+      description: 'Registry of Open Data on AWS National Oceanographic & Atmospheric Administration National Centers for Environmental Information'
+      roles:
+        - producer
+        - licensor
+      url: s3://noaa-cdr-outgoing-longwave-radiation-daily-pds/
+  license: 'Open Data'
+maintainers:
+  - name: 'Ruben L. Mendoza'
+    orcid: '0000-0001-5880-7243'
+    github: Rub21
+bakery:
+  id: 'pangeo-aws-noaa-outgoing-longwave-radiation-daily'
