@@ -1,0 +1,22 @@
+title: 'AWS NOAA CMORPH PRECIP MONTHLY'
+description: 'The Satellite Precipitation - CMORPH Climate Data Record (CDR) consists of satellite precipitation estimates that have been bias corrected and reprocessed using the the Climate Prediction Center (CPC) Morphing Technique (MORPH) to form a global, high resolution precipitation analysis. Data is reprocessed on a global grid with 8km-by-8km spatial resolution. Temporal resolution is 30 minutes over a 20 year period of record (January 1998–present). The output precipitation fields are produced on three different time-space resolutions to accommodate a variety of user requirements.'
+pangeo_forge_version: '0.9.2'
+pangeo_notebook_version: '2021.07.17'
+recipes:
+  - id: 'AWS NOAA CMORPH Precip monthly'
+    object: 'recipe:recipe'
+provenance:
+  providers:
+    - name: 'AWS NOAA CMORPH Precip monthly'
+      description: 'Registry of Open Data on AWS National Oceanographic & Atmospheric Administration National Centers for Environmental Information'
+      roles:
+        - producer
+        - licensor
+      url: s3://noaa-cdr-precip-cmorph-pds/
+  license: 'Open Data'
+maintainers:
+  - name: 'Ruben L. Mendoza'
+    orcid: '0000-0001-5880-7243'
+    github: Rub21
+bakery:
+  id: 'pangeo-aws-noaa-cmorph-precip-monthly'
