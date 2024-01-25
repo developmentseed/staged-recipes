@@ -117,6 +117,7 @@ remote_and_target_auth_options = {
 def test_ds(store: zarr.storage.FSStore) -> zarr.storage.FSStore:
     import fsspec
     fs = fsspec.filesystem('s3', **remote_and_target_auth_options)
+    import pdb; pdb.set_trace()
     ref_path = store.fs.storage_args[0]
     mapper = fs.get_mapper("reference://", fo=ref_path)
     zarr_group = zarr.open_consolidated(mapper)
