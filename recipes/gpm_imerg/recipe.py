@@ -116,7 +116,8 @@ remote_and_target_auth_options = {
 
 def test_ds(store: zarr.hierarchy.Group) -> zarr.hierarchy.Group:
     import fsspec
-    fs = fsspec.filesystem('s3', **remote_and_target_auth_options)
+    #fs = fsspec.filesystem('s3', **remote_and_target_auth_options)
+    import pdb; pdb.set_trace()
     assert isinstance(store, zarr.hierarchy.Group)
     assert isinstance(store._store, zarr.storage.ConsolidatedMetadataStore)
     assert isinstance(store._chunk_store, zarr.storage.FSStore)
@@ -126,7 +127,6 @@ def test_ds(store: zarr.hierarchy.Group) -> zarr.hierarchy.Group:
 
     print(f"Group path: {zarr_group.path}")
     print(f"Number of arrays: {len(zarr_group)}")
-    #import pdb; pdb.set_trace()
     print(f"Number of subgroups: {len(list(zarr_group.groups()))}")
 
     for array_name in zarr_group.array_keys():
