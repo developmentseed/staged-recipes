@@ -111,7 +111,7 @@ fsspec_open_kwargs = earthdata_auth(ED_USERNAME, ED_PASSWORD)
 
 def test_ds(store: zarr.storage.FSStore) -> zarr.storage.FSStore:
     import xarray as xr
-    ds = xr.open_dataset(store, engine="zarr",  consolidated=True)
+    ds = xr.open_dataset(store, engine="zarr",  consolidated=False)
     for dim, length in ds.dims.items():
         print(f"Dimension '{dim}': Length = {length}")
     return store
