@@ -1,13 +1,10 @@
 import base64
 import json
 import os
-from dataclasses import dataclass, field
-from typing import Dict
 
 import apache_beam as beam
 import pandas as pd
 import requests
-import xarray as xr
 import zarr
 from requests.auth import HTTPBasicAuth
 
@@ -107,13 +104,43 @@ def earthdata_auth(username: str, password: str):
 
 
 fsspec_open_kwargs = earthdata_auth(ED_USERNAME, ED_PASSWORD)
+remote_and_target_auth_options = {
+    'key': os.environ["S3_DEFAULT_AWS_ACCESS_KEY_ID"],
+    'secret': os.environ["S3_DEFAULT_AWS_SECRET_ACCESS_KEY"],
+    "anon": False,
+    'client_kwargs': {
+        'region_name': 'us-west-2'
+    }
+}
 
 
 def test_ds(store: zarr.storage.FSStore) -> zarr.storage.FSStore:
-    import xarray as xr
-    ds = xr.open_dataset(store, engine="zarr",  consolidated=True)
-    for dim, length in ds.dims.items():
-        print(f"Dimension '{dim}': Length = {length}")
+    import fsspec
+    fs = fsspec.filesystem('s3', **remote_and_target_auth_options)
+    ref_path = store.fs.storage_args[0]
+    mapper = fs.get_mapper("reference://", fo=ref_path)
+    zarr_group = zarr.open_consolidated(mapper)
+
+    print(f"Group path: {zarr_group.path}")
+    print(f"Number of arrays: {len(zarr_group)}")
+    print(f"Number of subgroups: {len(zarr_group.groups())}")
+
+    for array_name in zarr_group.array_keys():
+        array = zarr_group[array_name]
+        print(f"\nArray name: {array_name}")
+        print(f"Shape: {array.shape}")
+        print(f"Data type: {array.dtype}")
+        print(f"Chunk size: {array.chunks}")
+
+        # Print array attributes if any
+        if array.attrs:
+            print("Attributes:")
+            for attr, value in array.attrs.items():
+                print(f"  {attr}: {value}")
+
+    for subgroup in zarr_group.groups():
+        print(f"Subgroup: {subgroup}")
+
     return store
 
 
