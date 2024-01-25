@@ -121,8 +121,8 @@ def test_ds(store: zarr.hierarchy.Group) -> zarr.hierarchy.Group:
     assert isinstance(store._store, zarr.storage.ConsolidatedMetadataStore)
     assert isinstance(store._chunk_store, zarr.storage.FSStore)
     ref_path = store._chunk_store.fs.storage_options['fo']
-    import pdb; pdb.set_trace()
-    mapper = fs.get_mapper("reference://", fo=ref_path)
+    #import pdb; pdb.set_trace()
+    mapper = fsspec.get_mapper("reference://", fo=ref_path)
     zarr_group = zarr.open_consolidated(mapper)
 
     print(f"Group path: {zarr_group.path}")
