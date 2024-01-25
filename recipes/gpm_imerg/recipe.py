@@ -109,31 +109,13 @@ def earthdata_auth(username: str, password: str):
 fsspec_open_kwargs = earthdata_auth(ED_USERNAME, ED_PASSWORD)
 
 
-@dataclass
-class ValidateDatasetDimensions(beam.PTransform):
-    """Open the reference.json in xarray and validate dimensions."""
+def test_ds(store: zarr.storage.FSStore) -> zarr.storage.FSStore:
+    import xarray as xr
+    ds = xr.open_dataset(store, engine="zarr", chunks={})
+    for dim, length in ds.dims.items():
+        print(f"Dimension '{dim}': Length = {length}")
+    return store
 
-    expected_dims: Dict = field(default_factory=dict)
-
-    @staticmethod
-    def _validate(zarr_store: zarr.storage.FSStore, expected_dims: Dict) -> None:
-        ds = xr.open_dataset(zarr_store, engine='zarr')
-        if set(ds.dims) != expected_dims.keys():
-            raise ValueError(f'Expected dimensions {expected_dims.keys()}, got {ds.dims}')
-        for dim, bounds in expected_dims.items():
-            if bounds is None:
-                continue
-            lo, hi = bounds
-            actual_lo, actual_hi = round(ds[dim].data.min()), round(ds[dim].data.max())
-            if actual_lo != lo or actual_hi != hi:
-                raise ValueError(f'Expected {dim} range [{lo}, {hi}], got {actual_lo, actual_hi}')
-        return ds
-
-    def expand(
-        self,
-        pcoll: beam.PCollection,
-    ) -> beam.PCollection:
-        return pcoll | beam.Map(self._validate, expected_dims=self.expected_dims)
 
 
 recipe = (
@@ -151,4 +133,5 @@ recipe = (
         store_name=SHORT_NAME,
     )
     | ConsolidateMetadata()
+    | "Test dataset" >> beam.Map(test_ds)
 )
