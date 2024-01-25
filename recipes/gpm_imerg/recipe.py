@@ -126,8 +126,8 @@ def test_ds(store: zarr.hierarchy.Group) -> zarr.hierarchy.Group:
 
     print(f"Group path: {zarr_group.path}")
     print(f"Number of arrays: {len(zarr_group)}")
-    import pdb; pdb.set_trace()
-    print(f"Number of subgroups: {len(zarr_group.groups())}")
+    #import pdb; pdb.set_trace()
+    print(f"Number of subgroups: {len(list(zarr_group.groups()))}")
 
     for array_name in zarr_group.array_keys():
         array = zarr_group[array_name]
