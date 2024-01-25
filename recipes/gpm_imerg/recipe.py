@@ -114,11 +114,14 @@ remote_and_target_auth_options = {
 }
 
 
-def test_ds(store: zarr.storage.FSStore) -> zarr.storage.FSStore:
+def test_ds(store: zarr.hierarchy.Group) -> zarr.hierarchy.Group:
     import fsspec
     fs = fsspec.filesystem('s3', **remote_and_target_auth_options)
-    import pdb; pdb.set_trace()
-    ref_path = store.fs.storage_args[0]
+    #import pdb; pdb.set_trace()
+    assert isinstance(store, zarr.hierarchy.Group)
+    assert isinstance(store._store, zarr.storage.ConsolidatedMetadataStore)
+    assert isinstance(store._chunk_store, zarr.storage.FSStore)
+    ref_path = store._chunk_store.fs.storage_options['fo']
     mapper = fs.get_mapper("reference://", fo=ref_path)
     zarr_group = zarr.open_consolidated(mapper)
 
