@@ -116,7 +116,7 @@ remote_and_target_auth_options = {
 }
 
 
-def test_ds(store: zarr.hierarchy.Group) -> zarr.hierarchy.Group:
+def test_ds(store: zarr.storage.FSStore) -> None:
     import xarray as xr
     ds = xr.open_dataset(store, engine="zarr", chunks={})
     for dim, size in ds.dims.items():
