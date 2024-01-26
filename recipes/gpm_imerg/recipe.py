@@ -1,6 +1,8 @@
 import base64
 import json
 import os
+from dataclasses import dataclass, field
+from typing import MutableMapping
 
 import apache_beam as beam
 import pandas as pd
@@ -148,6 +150,42 @@ def test_ds(store: zarr.hierarchy.Group) -> zarr.hierarchy.Group:
     return store
 
 
+def consolidate_metadata(store: MutableMapping, fsspec_kwargs: dict) -> zarr.hierarchy.Group:
+    """Consolidate metadata for a Zarr store or Kerchunk reference
+
+    :param store: Input Store for Zarr or Kerchunk reference
+    :type store: MutableMapping
+    :param fsspec_kwargs: all optional fsspec kwargs
+    :type fsspec_kwargs: dict
+    :return: Output Store
+    :rtype: MutableMapping
+    """
+    import zarr
+    import fsspec
+    from fsspec.implementations.reference import ReferenceFileSystem
+
+    if isinstance(store, fsspec.FSMap) and isinstance(store.fs, ReferenceFileSystem):
+        ref_path = store.fs.storage_args[0]
+        path = fsspec.get_mapper("reference://", fo=ref_path, **fsspec_kwargs)
+    if isinstance(store, zarr.storage.FSStore):
+        path = store.path
+
+    zc = zarr.consolidate_metadata(path)
+    return zc
+
+
+@dataclass
+class ConsolidateMetadataV2(beam.PTransform):
+    """Calls Zarr Python consolidate_metadata on an existing Zarr store or Kerchunk reference
+    (https://zarr.readthedocs.io/en/stable/_modules/zarr/convenience.html#consolidate_metadata)
+
+    :param fsspec_kwargs: Additional kwargs to pass to ``fsspec.get_mapper``
+    """
+    fsspec_kwargs: dict = field(default_factory=dict)
+
+    def expand(self, pcoll: beam.PCollection) -> beam.PCollection:
+        return pcoll | beam.Map(consolidate_metadata)
+
 
 recipe = (
     beam.Create(pattern.items())
@@ -163,6 +201,6 @@ recipe = (
         identical_dims=IDENTICAL_DIMS,
         store_name=SHORT_NAME,
     )
-    | ConsolidateMetadata()
+    | ConsolidateMetadataV2(fsspec_kwargs=remote_and_target_auth_options)
     | "Test dataset" >> beam.Map(test_ds)
 )
