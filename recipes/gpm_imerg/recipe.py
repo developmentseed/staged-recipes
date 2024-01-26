@@ -26,7 +26,7 @@ IDENTICAL_DIMS = ['lat', 'lon']
 # 2023/07/3B-DAY.MS.MRG.3IMERG.20230731
 dates = [
     d.to_pydatetime().strftime('%Y/%m/3B-DAY.MS.MRG.3IMERG.%Y%m%d')
-    for d in pd.date_range('2000-06-01', '2000-06-05', freq='D')
+    for d in pd.date_range('2000-01-01', '2021-01-01', freq='D')
 ]
 
 
@@ -117,7 +117,7 @@ remote_and_target_auth_options = {
 def test_ds(store: zarr.hierarchy.Group) -> zarr.hierarchy.Group:
     import fsspec
     #fs = fsspec.filesystem('s3', **remote_and_target_auth_options)
-    import pdb; pdb.set_trace()
+    #import pdb; pdb.set_trace()
     assert isinstance(store, zarr.hierarchy.Group)
     assert isinstance(store._store, zarr.storage.ConsolidatedMetadataStore)
     assert isinstance(store._chunk_store, zarr.storage.FSStore)
