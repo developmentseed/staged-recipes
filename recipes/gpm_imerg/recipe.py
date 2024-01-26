@@ -184,7 +184,7 @@ class ConsolidateMetadataV2(beam.PTransform):
     fsspec_kwargs: dict = field(default_factory=dict)
 
     def expand(self, pcoll: beam.PCollection) -> beam.PCollection:
-        return pcoll | beam.Map(consolidate_metadata)
+        return pcoll | beam.Map(consolidate_metadata, fsspec_kwargs=self.fsspec_kwargs)
 
 
 recipe = (
