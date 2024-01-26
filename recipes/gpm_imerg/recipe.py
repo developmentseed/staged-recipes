@@ -116,37 +116,11 @@ remote_and_target_auth_options = {
 }
 
 
-def test_ds(store: zarr.hierarchy.Group, fsspec_kwargs: dict) -> zarr.hierarchy.Group:
-    import fsspec
-    #import pdb; pdb.set_trace()
-    assert isinstance(store, zarr.hierarchy.Group)
-    assert isinstance(store._store, zarr.storage.ConsolidatedMetadataStore)
-    assert isinstance(store._chunk_store, zarr.storage.FSStore)
-    ref_path = store._chunk_store.fs.storage_options['fo']
-    mapper = fsspec.get_mapper("reference://", fo=ref_path, **fsspec_kwargs)
-    zarr_group = zarr.open_consolidated(mapper)
-
-    print(f"Group path: {zarr_group.path}")
-    print(f"Number of arrays: {len(zarr_group)}")
-    print(f"Number of subgroups: {len(list(zarr_group.groups()))}")
-
-    for array_name in zarr_group.array_keys():
-        array = zarr_group[array_name]
-        print(f"\nArray name: {array_name}")
-        print(f"Shape: {array.shape}")
-        print(f"Data type: {array.dtype}")
-        print(f"Chunk size: {array.chunks}")
-
-        # Print array attributes if any
-        if array.attrs:
-            print("Attributes:")
-            for attr, value in array.attrs.items():
-                print(f"  {attr}: {value}")
-
-    for subgroup in zarr_group.groups():
-        print(f"Subgroup: {subgroup}")
-
-    return store
+def test_ds(store: zarr.hierarchy.Group) -> zarr.hierarchy.Group:
+    import xarray as xr
+    ds = xr.open_dataset(store, engine="zarr", chunks={})
+    for dim, size in ds.dims.items():
+        print(f"Dimension: {dim}, Length: {size}")
 
 
 def consolidate_metadata(store: MutableMapping, fsspec_kwargs: dict) -> zarr.hierarchy.Group:
@@ -200,6 +174,5 @@ recipe = (
         identical_dims=IDENTICAL_DIMS,
         store_name=SHORT_NAME,
     )
-    | ConsolidateMetadataV2(fsspec_kwargs=remote_and_target_auth_options)
-    | "Test dataset" >> beam.Map(test_ds, fsspec_kwargs=remote_and_target_auth_options)
+    | "Test dataset" >> beam.Map(test_ds)
 )
