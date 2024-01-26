@@ -116,14 +116,14 @@ remote_and_target_auth_options = {
 }
 
 
-def test_ds(store: zarr.hierarchy.Group) -> zarr.hierarchy.Group:
+def test_ds(store: zarr.hierarchy.Group, fsspec_kwargs: dict) -> zarr.hierarchy.Group:
     import fsspec
     #import pdb; pdb.set_trace()
     assert isinstance(store, zarr.hierarchy.Group)
     assert isinstance(store._store, zarr.storage.ConsolidatedMetadataStore)
     assert isinstance(store._chunk_store, zarr.storage.FSStore)
     ref_path = store._chunk_store.fs.storage_options['fo']
-    mapper = fsspec.get_mapper("reference://", fo=ref_path, **remote_and_target_auth_options)
+    mapper = fsspec.get_mapper("reference://", fo=ref_path, **fsspec_kwargs)
     zarr_group = zarr.open_consolidated(mapper)
 
     print(f"Group path: {zarr_group.path}")
@@ -201,5 +201,5 @@ recipe = (
         store_name=SHORT_NAME,
     )
     | ConsolidateMetadataV2(fsspec_kwargs=remote_and_target_auth_options)
-    | "Test dataset" >> beam.Map(test_ds)
+    | "Test dataset" >> beam.Map(test_ds, fsspec_kwargs=remote_and_target_auth_options)
 )
