@@ -28,7 +28,7 @@ IDENTICAL_DIMS = ['lat', 'lon']
 # 2023/07/3B-DAY.MS.MRG.3IMERG.20230731
 dates = [
     d.to_pydatetime().strftime('%Y/%m/3B-DAY.MS.MRG.3IMERG.%Y%m%d')
-    for d in pd.date_range('2000-06-01', '2001-01-01', freq='D')
+    for d in pd.date_range('2000-06-01', '2024-01-01', freq='D')
 ]
 
 
@@ -106,14 +106,6 @@ def earthdata_auth(username: str, password: str):
 
 
 fsspec_open_kwargs = earthdata_auth(ED_USERNAME, ED_PASSWORD)
-remote_and_target_auth_options = {
-    'key': os.environ["S3_DEFAULT_AWS_ACCESS_KEY_ID"],
-    'secret': os.environ["S3_DEFAULT_AWS_SECRET_ACCESS_KEY"],
-    "anon": False,
-    'client_kwargs': {
-        'region_name': 'us-west-2'
-    }
-}
 
 
 def test_ds(store: zarr.storage.FSStore) -> None:
@@ -121,43 +113,6 @@ def test_ds(store: zarr.storage.FSStore) -> None:
     ds = xr.open_dataset(store, engine="zarr", chunks={})
     for dim, size in ds.dims.items():
         print(f"Dimension: {dim}, Length: {size}")
-
-
-def consolidate_metadata(store: MutableMapping, fsspec_kwargs: dict) -> zarr.hierarchy.Group:
-    """Consolidate metadata for a Zarr store or Kerchunk reference
-
-    :param store: Input Store for Zarr or Kerchunk reference
-    :type store: MutableMapping
-    :param fsspec_kwargs: all optional fsspec kwargs
-    :type fsspec_kwargs: dict
-    :return: Output Store
-    :rtype: MutableMapping
-    """
-    import zarr
-    import fsspec
-    from fsspec.implementations.reference import ReferenceFileSystem
-
-    if isinstance(store, fsspec.FSMap) and isinstance(store.fs, ReferenceFileSystem):
-        ref_path = store.fs.storage_args[0]
-        path = fsspec.get_mapper("reference://", fo=ref_path, **fsspec_kwargs)
-    if isinstance(store, zarr.storage.FSStore):
-        path = store.path
-
-    zc = zarr.consolidate_metadata(path)
-    return zc
-
-
-@dataclass
-class ConsolidateMetadataV2(beam.PTransform):
-    """Calls Zarr Python consolidate_metadata on an existing Zarr store or Kerchunk reference
-    (https://zarr.readthedocs.io/en/stable/_modules/zarr/convenience.html#consolidate_metadata)
-
-    :param fsspec_kwargs: Additional kwargs to pass to ``fsspec.get_mapper``
-    """
-    fsspec_kwargs: dict = field(default_factory=dict)
-
-    def expand(self, pcoll: beam.PCollection) -> beam.PCollection:
-        return pcoll | beam.Map(consolidate_metadata, fsspec_kwargs=self.fsspec_kwargs)
 
 
 recipe = (
